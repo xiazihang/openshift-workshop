@@ -125,5 +125,5 @@ oc version # check oc version => 1.5+
     - fork the demo project(https://github.com/openshift/nodejs-ex) to your own github account 
     - Clone configuration files
     ```
-    git clone https://github.com/gmlove/openshift-workshop.git 
+    git clone https://github.com/xiazihang/openshift-workshop.git 
     ```
