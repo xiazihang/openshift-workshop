@@ -129,7 +129,7 @@ theme: light
 
 ---
 
-![deployconfig](/img/deployconfig) 
+![deployconfig](/img/deployconfig.png) 
 
 [slide]
 
