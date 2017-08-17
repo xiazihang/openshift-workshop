@@ -3,6 +3,7 @@ speaker: Zihang
 url: https://github.com/ksky521/nodePPT
 transition: zoomin 
 files: /js/demo.js,/css/demo.css
+theme: light
 
 [slide style="background-image:url('/img/bg1.png')"]
 
@@ -23,8 +24,6 @@ files: /js/demo.js,/css/demo.css
   * Webhook: Triggers build upon repository changes 
 - Managing images  
   * Container registry {:&.moveIn}
-  * Image stream 
-  * Image tag policy  
 - Application management 
   * Building {:&.moveIn} 
   * Deployment 
@@ -49,7 +48,7 @@ files: /js/demo.js,/css/demo.css
 - Pods and Services 
 - Projects 
 - Builds  
-- deployment 
+- Deployment 
 
 [slide ]
 
@@ -61,7 +60,13 @@ files: /js/demo.js,/css/demo.css
     - Image: include all requirements of running a container  
     - Container Registries: Docker Hub, private registry, third-party regitry 
 
-[slide style="background-image:url('/img/container-registry.png')"]
+[slide]
+
+# Container registry 
+
+---
+
+![registry](/img/container-registry.png) 
 
 [slide]
 
@@ -70,7 +75,7 @@ files: /js/demo.js,/css/demo.css
 ---
 - Pods and Services {:&.moveIn}
   - Pods: a set of one or more containers, smallest compute unit can be defined, deployed and managed {:&.moveIn}
-  - Serivces: internal loadbalancer, expose backing pods service to external clients 
+  - Services: internal loadbalancer, expose backing pods service to external clients 
   - labels
 [slide]
 
@@ -85,7 +90,7 @@ files: /js/demo.js,/css/demo.css
 ---
 
 - Projects 
-  - namespace: machanisam to scope resources in cluster {:&.moveIn} 
+  - namespace: machanism to scope resources in cluster {:&.moveIn} 
 
 
 [slide]
@@ -93,8 +98,17 @@ files: /js/demo.js,/css/demo.css
 # Core Concepts 
 
 ---
-- Builds 
-  - BuildConfig {:&.moveIn}
+
+- Build 
+  - BuildConfig {:&.moveIn} 
+
+[slide]
+
+# BuildConfig 
+
+---
+
+![buildconfig](/img/buildconfig.png)
 
 [slide]
 
@@ -102,9 +116,20 @@ files: /js/demo.js,/css/demo.css
 
 ---
 
-- Deployments 
-  - Replication Controller 
+- Deployment 
 
+  - deployment configuration {:&.moveIn}
+  - Replication Controller  
+  - one or more pods 
+
+
+[slide]
+
+# DeployConfig 
+
+---
+
+![deployconfig](/img/deployconfig) 
 
 [slide]
 
