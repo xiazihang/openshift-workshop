@@ -155,6 +155,81 @@ oc version # check oc version => 1.5+
 
 [slide]
 
+# PersistenceVolume 
+
+```
+apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv0003
+  spec:
+    capacity:
+      storage: 5Gi
+    accessModes:
+      - ReadWriteOnce
+    persistentVolumeReclaimPolicy: Recycle
+    storageClassName: slow
+    nfs:
+      path: /tmp
+      server: 172.17.0.2
+```
+
+[slide] 
+
+# PersistenceVolumeClaim 
+
+```
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: myclaim
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 8Gi
+  storageClassName: slow
+  selector:
+    matchLabels:
+      release: "stable"
+    matchExpressions:
+      - {key: environment, operator: In, values: [dev]}
+```
+
+[slide]
+
+# Access Mode 
+
+- RWO(ReadWriteOnce) {:&.moveIn}
+- ROX(ReadOnlyMany) 
+- RWX(ReadWriteMany) 
+
+[slide]
+
+# Lifecycle of PV and PVC 
+
+---
+- Provisioning {:&.moveIn}
+    - static {:&.moveIn}
+    - dynamic
+- Binding 
+- Using 
+- Reclaim 
+    - Retain {:&.moveIn}
+    - Recycle 
+    ```
+    rm -rf /the volume path/* 
+    ```
+    - Delete 
+
+[slide] 
+
+# PersistenceVolume Types 
+
+![pv-types](/img/pv-types.png)
+[slide]
+
 # Feedback 
 
 ![feedback](/img/feedback.png) 
