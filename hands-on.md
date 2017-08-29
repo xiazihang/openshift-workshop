@@ -346,20 +346,46 @@ CI/CD for the application
 
 ### Integrate Jenkins with the application
 
+- Create two projects for multiple environment, one is for build and dev region, one is for sys region
+  ```
+  oc new-project nodejs-build-dev
+  oc new-project nodejs-sys
+  ```
+- Run nodejs application under nodejs-build-dev project
+
+- Grant jenkins access to use deployment config across projects
+  
+  under nodejs-build-dev project
+  
+  ```
+  oc policy add-role-to-user system:serviceaccount:nodejs-build-dev:jenkins -n nodejs-sys
+  ```
+  
 - Create a pipeline build config
 
   Create a file named `nodejs-ex-pipeline.yaml` with content (already created for you):
 
   ```
-  kind: "BuildConfig"
+  kind: "BuildConfig"
   apiVersion: "v1"
   metadata:
     name: "nodejs-ex-pipeline"
   spec:
-    strategy:
+   strategy:
       jenkinsPipelineStrategy:
-        jenkinsfile: "node('nodejs') {\n  stage 'build'\n  openshiftBuild(buildConfig: 'nodejs-ex', showBuildLogs: 'true')\n  stage 'deploy'\n  openshiftDeploy(deploymentConfig: 'nodejs-ex')\n}\n"
-  ```
+          jenkinsfile: |-
+            node('nodejs') {
+               stage('build') {
+                   openshiftBuild(buildConfig: 'nodejs-ex', showBuildLogs: 'true')
+               }
+               stage('deployDev') {
+                   openshiftDeploy(deploymentConfig: 'nodejs-ex')
+               }
+               stage('deploySys') {
+                   openshiftDeploy(deploymentConfig: 'nodejs-ex', namespace: 'nodejs-ex-sys')
+               }
+            }
+  ```
 
   To create a pipeline, run:
     `oc create -f nodejs-ex-pipeline.yaml`
@@ -369,15 +395,9 @@ CI/CD for the application
   + route `routes/jenkins`
   + services `svc/jenkins` `svc/jenkins`
 
-- Run `oc status` to get your dns of the jenkins application. Then you can open it in your browser and perform an oauth login with openshift credentials.
+ - Run `oc status` to get your dns of the jenkins application. Then you can open it in your browser and perform an oauth login with openshift credentials.
 
-- Trigger a build manually and you can check logs from jenkins. You can also find what is openshift doing by `watch oc get all`
-
-  + Openshift creates a slave based on the node being used, here it's `nodejs`
-
-  + Run the build in that slave
-
-  + For our simple example, the pipeline has two steps: trigger a build(works just like `oc start-build bc/nodejs-ex`), and then trigger a deployment
+  + For our simple example, the pipeline has 3 steps: trigger a build(works just like `oc start-build bc/nodejs-ex`), and then trigger a deployment in dev and sys region
 
 
 ### Multiple environment management
@@ -395,37 +415,28 @@ Consider your situation in your organization and choose one properly. We'll try 
 - Tag all the resources to export
 
   ```
-  oc label dc/mongodb promotion=nodejs-ex
   oc label dc/nodejs-ex promotion=nodejs-ex
   oc label svc/nodejs-ex promotion=nodejs-ex
-  oc label svc/mongodb promotion=nodejs-ex
   oc label routes/nodejs-ex promotion=nodejs-ex
-  oc label pvc/mongodb promotion=nodejs-ex
   oc label is/nodejs-ex promotion=nodejs-ex
-  oc label secret/nodejs-ex promotion=nodejs-ex
   ```
 
 - Export those resources
 
-  `oc export dc,svc,routes,pvc,is,secret -l promotion=nodejs-ex -o yaml > exported-for-promotion.yaml`
+  `oc export dc,svc,routes,is -l promotion=nodejs-ex -o json > exported-for-promotion.json`
 
 - Open the exported file and do the below to make it portable to `sys` environment:
 
-  + Remove image hash tag
-  + Replace all string `test1` to `test1-sys` and we're creating a project named `test1-sys`
-  + Remove `annotations` `volumeName` `status` `creationTimestamp` from `PersistentVolumeClaim`
+  + Remove image version hash
+  + Replace all string `nodejs-build-dev` to `nodejs-sys`
 
-- Create a new project by `oc new-project test1-sys`
+- Create resources by `oc create -f exported-for-promotion.json` under `nodejs-sys` project
 
-- Create resources by `oc create -f exported-for-promotion.yaml`
+- Tag an image from `nodejs-build-dev`
 
-- Tag an image from test1
+  `oc tag nodejs-build-dev/nodejs-ex:latest nodejs-ex:latest`
 
-  `oc tag test1/nodejs-ex:latest nodejs-ex:latest`
-
-- After that you can trigger a deployment, and after it succeeded, you will be able to open the application in `sys` environment
-
-- Try create a template for these resources and then you can create any new environment with one command
+- After that you can trigger a deployment from jenkins to see what happend, and after it succeeded, you will be able to open the application in `sys` environment
 
 
 Logging, Monitoring, Debugging
