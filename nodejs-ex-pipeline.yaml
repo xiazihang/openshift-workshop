@@ -5,4 +5,4 @@ metadata:
 spec:
   strategy:
     jenkinsPipelineStrategy:
-      jenkinsfile: "node('nodejs') {\n  stage 'build'\n  openshiftBuild(buildConfig: 'nodejs-ex', showBuildLogs: 'true')\n  stage 'deploy'\n  openshiftDeploy(deploymentConfig: 'nodejs-ex')\n}\n"
+        jenkinsfile: "node('nodejs') {\n  stage 'build'\n  openshiftBuild(buildConfig: 'nodejs-ex', showBuildLogs: 'true')\n  stage 'deployDev'\n  openshiftDeploy(deploymentConfig: 'nodejs-ex', nameSpace: 'dev')\n  stage 'deploySys'\n  openshiftDeploy(deploymentConfig: 'nodejs-ex', nameSpace: 'sys')}\n"
