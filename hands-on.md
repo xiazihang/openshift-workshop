@@ -348,17 +348,17 @@ CI/CD for the application
 
 - Create two projects for multiple environment, one is for build and dev region, one is for sys region
   ```
-  oc new-project nodejs-build-dev
+  oc new-project nodejs-dev
   oc new-project nodejs-sys
   ```
 - Run nodejs application under nodejs-build-dev project
 
 - Grant jenkins access to use deployment config across projects
   
-  under nodejs-build-dev project
+  under nodejs-dev project
   
   ```
-  oc policy add-role-to-user system:serviceaccount:nodejs-build-dev:jenkins -n nodejs-sys
+  oc policy add-role-to-user system:serviceaccount:nodejs-dev:jenkins -n nodejs-sys
   ```
   
 - Create a pipeline build config
