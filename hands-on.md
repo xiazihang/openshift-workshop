@@ -43,12 +43,12 @@ In this section, We are going to create a nodejs project with mongodb in OpenShi
 
 - log on to OpenShift web console
 
-  In browser, navigate to `https://13.229.27.84:8443` and login with any username and password you'd like to use. OpenShift will create that account for you.
+  In browser, navigate to `https://13.228.213.140:8443` and login with any username and password you'd like to use. OpenShift will create that account for you.
 
 ### Login
 - `oc login https://13.229.27.84:8443`  and input your username and password:
 
-  > Authentication required for https://13.229.27.84:8443 (openshift) 
+  > Authentication required for https://13.228.213.140:8443 (openshift) 
   >
   > Username: <your-username> 
   >
@@ -90,7 +90,7 @@ In this section, We are going to create a nodejs project with mongodb in OpenShi
 
   > your route url should look like this: 
   >
-  > nodejs-ex-\<your-project-name\>.13.229.27.84.xip.io
+  > nodejs-ex-\<your-project-name\>.13.228.213.140.xip.io
 
 - check out the url in web browser you'll see the welcome page
 
@@ -457,7 +457,7 @@ Logging, Monitoring, Debugging
 - Prometheus/zabbix/hawk: https://github.com/openshift/openshift-tools/tree/stg/openshift_tools/monitoring
   
   An example to setup prometheus and grafana: https://github.com/debianmaster/openshift-examples/tree/master/promethus
-  We created a monitor service already: http://grafana-openshift-infra.13.228.41.255.xip.io (admin:admin)
+  We created a monitor service already: http://grafana-openshift-infra.13.228.213.140.xip.io (admin:admin)
 
 - dynatrace/coscale/sysdig/appdynamics
 
