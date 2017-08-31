@@ -358,7 +358,7 @@ CI/CD for the application
   under nodejs-dev project
   
   ```
-  oc policy add-role-to-user system:serviceaccount:nodejs-dev:jenkins -n nodejs-sys
+  oc policy add-role-to-user edit system:serviceaccounts:<your dev project>:jenkins -n <your sys project>
   ```
   
 - Create a pipeline build config
